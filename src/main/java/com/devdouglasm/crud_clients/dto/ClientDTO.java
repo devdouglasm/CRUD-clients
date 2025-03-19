@@ -1,5 +1,7 @@
 package com.devdouglasm.crud_clients.dto;
 
+import com.devdouglasm.crud_clients.entities.Client;
+
 import java.time.LocalDate;
 
 public class ClientDTO {
@@ -16,6 +18,14 @@ public class ClientDTO {
         this.income = income;
         this.birthDate = birthDate;
         this.children = children;
+    }
+
+    public ClientDTO(Client client) {
+        name = client.getName();
+        cpf = client.getCpf();
+        income = client.getIncome();
+        birthDate = client.getBirthDate();
+        children = client.getChildren();
     }
 
     public String getName() {
