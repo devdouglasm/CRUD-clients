@@ -5,6 +5,7 @@ import com.devdouglasm.crud_clients.entities.Client;
 import com.devdouglasm.crud_clients.repositories.ClientRepository;
 import com.devdouglasm.crud_clients.services.exceptions.DatabaseException;
 import com.devdouglasm.crud_clients.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -40,10 +41,15 @@ public class ClientService {
 
     @Transactional
     public ClientDTO update(Long id, ClientDTO dto) {
-        Client client = repository.getReferenceById(id);
-        copyDtoToEntity(dto, client);
-        client = repository.save(client);
-        return new ClientDTO(client);
+        try {
+            Client client = repository.getReferenceById(id);
+            copyDtoToEntity(dto, client);
+            client = repository.save(client);
+            return new ClientDTO(client);
+        }
+        catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
     }
 
     @Transactional
