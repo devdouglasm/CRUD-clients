@@ -3,8 +3,10 @@ package com.devdouglasm.crud_clients.services;
 import com.devdouglasm.crud_clients.dto.ClientDTO;
 import com.devdouglasm.crud_clients.entities.Client;
 import com.devdouglasm.crud_clients.repositories.ClientRepository;
+import com.devdouglasm.crud_clients.services.exceptions.DatabaseException;
 import com.devdouglasm.crud_clients.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,18 @@ public class ClientService {
         return new ClientDTO(client);
     }
 
+    @Transactional
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Resource not found");
+        }
+        try {
+            repository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DatabaseException("Referencial error");
+        }
+    }
 
     private void copyDtoToEntity(ClientDTO dto, Client entity) {
         entity.setName(dto.getName());

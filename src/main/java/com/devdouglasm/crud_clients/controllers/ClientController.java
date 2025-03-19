@@ -28,12 +28,17 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto) {
-        return  new ResponseEntity<>(service.insert(dto), HttpStatus.OK);
+        return new ResponseEntity<>(service.insert(dto), HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
-        return  new ResponseEntity<>(service.update(id, dto), HttpStatus.OK);
+        return new ResponseEntity<>(service.update(id, dto), HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
