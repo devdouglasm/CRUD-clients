@@ -15,12 +15,9 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Name cannot be empty")
     private String name;
     private String cpf;
     private Double income;
-
-    @PastOrPresent(message = "Birth date cannot be in the future")
     private LocalDate birthDate;
     private Integer children;
 
